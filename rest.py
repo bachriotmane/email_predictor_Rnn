@@ -2,12 +2,14 @@
 import numpy as np                              # For numerical computations
 import pandas as pd                             # For handling datasets
 from sklearn.model_selection import train_test_split # For splitting data into training and testing sets
-from sklearn.feature_extraction.text import CountVectorizer # For converting text to numerical features
-import scipy.sparse                             # For working with sparse matrices
-from keras.models import Sequential             # For creating a neural network model
-from keras.layers import Dense                  # For adding layers to the neural network
+from sklearn.feature_extraction.text import CountVectorizer
+import scipy.sparse
+from keras.models import Sequential
+from keras.layers import Dense
 from sklearn.metrics import classification_report
-import joblib                                   # For saving the model
+import joblib
+
+from predicturl import url_predictor                                   # For saving the model
 
 # Load the dataset
 dataset = pd.read_csv('fraud_email_.csv')
@@ -66,6 +68,18 @@ def predict():
     print(prediction)
     # Return the prediction
     return jsonify({'prediction': int(prediction[0, 0])})
+@app.route('/predict_url', methods=['POST'])
+def predictUrl():
+    # Get the text from the request
+    text = request.json['text']
+    
+    # Convert the text to numerical features
+    
+    # Predict the class
+    prediction = url_predictor(text)
+    print(prediction)
+    # Return the prediction
+    return jsonify(prediction)
 
 if __name__ == '__main__':
     app.run(debug=True)
